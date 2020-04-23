@@ -10,21 +10,8 @@ server.use(cors());
 server.use(express.urlencoded({ extended: true, strict: false }));
 server.use(express.json());
 server.use(authMiddleware);
-server.all(
-  "*",
-  proxy(process.env.URL)
-  // proxy(process.env.URL, {
-  //   userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
-  //     // data = JSON.parse(p);
-  //     // data.newProperty = "exciting data";
-  //     //console.log(userReq.url);
-  //     let html = proxyResData.toString("utf8");
-  //     return html;
-  //     //return JSON.stringify(data);
-  //   },
-  // })
-);
-
+server.all("/api/*", proxy(process.env.API_URL));
+server.get("/*", proxy(process.env.URL));
 const port = process.env.PORT ? process.env.PORT : 1337;
 
 server.listen(port, () =>
